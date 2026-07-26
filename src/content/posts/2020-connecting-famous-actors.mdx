@@ -1,0 +1,17 @@
+export const meta = { slug: 'connecting-famous-actors', date: '2020-10-29', title: 'Connecting famous actors', description: 'A graph experiment exploring how closely Hollywood actors are connected through shared films.', image: '/assets/img/201029.jpg', tags: ['Graphs', 'Data', 'JavaScript'] }
+
+## Hollywood as a graph
+
+Inspired by a TikTok, this ten-hour experiment asks how tightly connected Hollywood actors are when movies become the links. The claim was that any two actors in IMDb’s top-1000 list could be connected with six or fewer links; I wanted to see how low that number could go.
+
+## Building the graph
+
+Actors are nodes and shared movies are edges, which makes this an unweighted graph where breadth-first search can find shortest paths. I scraped the list of actors and their filmographies, then parallelized requests so the collection step was roughly eight times faster than a sequential pass.
+
+The first result had a maximum separation of four. It was technically correct but not always satisfying: some paths used obscure or unreleased films. I checked release status and review counts across roughly 85,000 works, a process that took almost five hours, to prefer recognizable movies where possible.
+
+The data then needed compression. Removing movies that were not the most popular connection between any pair of actors, reindexing everything, and keeping long names in a translation dictionary reduced the graph from nearly five megabytes to about 4.5 kB.
+
+## Results
+
+The maximum separation in the final graph was four degrees. One example connects Ingrid Bergman and Shah Rukh Khan; most popular contemporary actors are connected in two steps. The original interactive experiment let visitors try their own pairs, while the accompanying [GitHub project](https://github.com/Lan-Sevcnikar/ConnectingActors) contains the data and search code.

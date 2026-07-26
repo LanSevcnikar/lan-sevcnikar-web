@@ -1,0 +1,38 @@
+export const meta = {
+  slug: 'reversing-conways-game-of-life',
+  date: '2026-01-01',
+  title: "Reversing Conway's Game of Life",
+  description: 'Trying to reconstruct a history for a cellular automaton with constraint solvers and a search tree.',
+  image: '/assets/posts/2026-reversing-conways-game-of-life/solution.png',
+  tags: ['Algorithms', 'Constraint solving', 'Z3'],
+}
+
+## Easy forward, awkward backward
+
+Conway’s Game of Life is wonderfully small: every square is alive or dead, and the next generation depends only on its eight neighbours. A live cell survives with two or three neighbours; a dead one is born with exactly three. Run it forward and there is no mystery.
+
+With Ivo Hrib, I worked on the inverse question: given a final pattern, can we find a state that could have produced it? There might be many predecessors, or none. The local rules still apply, but now every cell has to agree with the next generation at once.
+
+![A small Game of Life evolution, shown forward from a possible predecessor](/assets/posts/2026-reversing-conways-game-of-life/step2.png)
+
+## Asking a solver to imagine the past
+
+We tried three ways of expressing those constraints: integer linear programming, SAT with KISSAT, and SMT with Z3. ILP gave sparse predecessors but was slow. KISSAT was extremely fast on small boards, but the explicit rule encoding became unwieldy as the board grew. Z3 gave us the best balance: a compact Boolean formulation and enough flexibility to keep iterating on the search.
+
+The real enemy was not one backwards step. It was space. An unconstrained predecessor could grow away from the target pattern, making the search grid—and the solver problem—explode. We experimented with ordinary bounding boxes, then found a tighter one: the union of the neighbourhoods of the currently live cells. Sparse predecessors helped the next step stay small too.
+
+## One step at a time
+
+Encoding an entire history in a single solver became impractical after only a couple of steps. Instead, we generated a predecessor, fed it back into the solver, and explored the resulting history as a tree. That was cheaper, but it introduced a new issue: a deterministic solver happily keeps finding near-identical branches.
+
+We limited the number and similarity of children, favoured sparse states, and added randomized backtracking with small relaxations of the sparsity target. Those choices were not shortcuts around the problem; they were the way to spend limited computation on genuinely different histories.
+
+![The multithreaded interface used to inspect and explore the predecessor tree](/assets/posts/2026-reversing-conways-game-of-life/solution.png)
+
+## A recovered sequence
+
+The final tool let us inspect the search tree and work backwards through a candidate sequence of states. It is satisfying precisely because it is not a unique answer: Game of Life throws information away as it evolves, so the recovered past is one consistent explanation rather than *the* history.
+
+![A recovered backwards sequence, stepping through states 00 to 13](/assets/posts/2026-reversing-conways-game-of-life/recovered-history.gif)
+
+The project was a neat lesson in inverse problems. The rules are deterministic, local, and easy to simulate; undoing them turns out to be a very different kind of computation.

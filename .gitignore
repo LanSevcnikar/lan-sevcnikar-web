@@ -46,6 +46,8 @@ build/Release
 
 # Dependency directories
 node_modules/
+dist/
+.netlify/
 
 # Optional npm cache directory
 .npm
@@ -64,3 +66,6 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+# unrelated data
+files/

@@ -1,0 +1,27 @@
+export const meta = { slug: 'spotify-recommendations', date: '2024-04-24', title: 'Spotify song recommendation algorithms', description: 'An exploration of approaches to building a song recommendation system using Spotify data, and how the results compare.', image: '/assets/img/240424.jpg', tags: ['Python', 'Machine learning', 'Spotify'], wip: true }
+import Collapsible from '../../components/Collapsible'
+
+## The project
+
+This is an ongoing exploration of song recommendation systems built from Spotify data. The goal is to test multiple approaches, compare their recommendations, and make the trade-offs visible rather than treating a recommendation as a black box.
+
+## A simple approach
+
+The first experiment uses a dataset of song metadata. Alongside artist and year, each track has Spotify features such as acousticness, danceability, energy, instrumentalness, liveness, loudness, speechiness, and tempo. I percentile-normalized the values and compared tracks with Euclidean distance and cosine similarity.
+
+![Distribution of valence in the dataset](/assets/posts/240424/240424-01.png)
+
+<Collapsible title="Example normalized track data"><table><thead><tr><th>Feature</th><th>Value</th></tr></thead><tbody><tr><td>danceability</td><td>0.335015</td></tr><tr><td>energy</td><td>0.179</td></tr><tr><td>acousticness</td><td>0.88253</td></tr><tr><td>valence</td><td>0.315</td></tr><tr><td>track</td><td>Yesterday — Remastered 2009</td></tr></tbody></table></Collapsible>
+
+The result was poor: the nearest songs to *Yesterday* were not meaningfully similar. That motivated the second approach.
+
+## Neural network approach — Skip-gram embeddings
+
+Spotify’s million-playlist dataset offers a different signal. Treat each song as a token and each playlist as a sentence, then train a Skip-gram model to predict the context of a song. Songs that occur together repeatedly should land near each other in the embedding space.
+
+K-means clustering, elbow/silhouette analysis, and t-SNE visualizations gave a useful but imperfect view. The clusters flowed into one another, yet nearest-neighbor results were much more specific: Beatles tracks clustered with other Beatles songs, while less popular songs found stylistically related artists.
+
+![Cluster silhouette scores](/assets/posts/240424/240424-02.png)
+![Elbow method](/assets/posts/240424/240424-03.png)
+
+<Collapsible title="More visualizations"><p>These figures show the 2D and animated 3D t-SNE projections after removing the most extreme outliers.</p><img src="/assets/posts/240424/240424-04.png" alt="2D t-SNE projection" /><img src="/assets/posts/240424/240424-05.gif" alt="Animated 3D t-SNE projection" /></Collapsible>

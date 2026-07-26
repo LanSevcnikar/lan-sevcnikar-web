@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">A playlist and song graph for LightGCN</title>
+  <desc id="desc">A bipartite graph connects playlist nodes on the left to song nodes on the right. An orange song is the predicted playlist completion.</desc>
+  <rect width="1200" height="675" fill="#11151c"/>
+  <g font-family="Arial, sans-serif">
+    <text x="76" y="78" fill="#f3f1eb" font-size="34" font-weight="700">Playlist completion as a graph</text>
+    <text x="76" y="112" fill="#aeb7c4" font-size="18">Playlists and songs become nodes; repeated co-occurrences become edges.</text>
+    <text x="132" y="170" fill="#aeb7c4" font-size="15" letter-spacing="2">PLAYLISTS</text>
+    <text x="796" y="170" fill="#aeb7c4" font-size="15" letter-spacing="2">SONGS</text>
+  </g>
+  <g fill="none" stroke="#596170" stroke-width="3" stroke-linecap="round" opacity=".9">
+    <path d="M351 235 C510 220 644 205 780 215"/><path d="M351 235 C520 240 655 310 780 335"/><path d="M351 235 C510 268 660 435 780 455"/>
+    <path d="M351 355 C510 286 650 210 780 215"/><path d="M351 355 C510 350 655 333 780 335"/><path d="M351 355 C520 395 650 455 780 455"/><path d="M351 355 C520 420 650 575 780 575"/>
+    <path d="M351 475 C510 405 650 334 780 335"/><path d="M351 475 C510 468 650 455 780 455"/><path d="M351 475 C530 520 650 570 780 575"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="18" font-weight="600">
+    <rect x="110" y="195" width="245" height="80" rx="14" fill="#242b36" stroke="#7c8799" stroke-width="2"/><text x="138" y="228" fill="#f3f1eb">late-night coding</text><text x="138" y="254" fill="#aeb7c4" font-size="14" font-weight="400">12 tracks</text>
+    <rect x="110" y="315" width="245" height="80" rx="14" fill="#242b36" stroke="#7c8799" stroke-width="2"/><text x="138" y="348" fill="#f3f1eb">weekend train ride</text><text x="138" y="374" fill="#aeb7c4" font-size="14" font-weight="400">24 tracks</text>
+    <rect x="110" y="435" width="245" height="80" rx="14" fill="#242b36" stroke="#7c8799" stroke-width="2"/><text x="138" y="468" fill="#f3f1eb">rainy afternoon</text><text x="138" y="494" fill="#aeb7c4" font-size="14" font-weight="400">18 tracks</text>
+  </g>
+  <g font-family="Arial, sans-serif">
+    <g><circle cx="820" cy="215" r="48" fill="#293240" stroke="#94a3b8" stroke-width="2"/><path d="M800 215h40M808 201v28M832 201v28" stroke="#d6d8dd" stroke-width="3"/><text x="886" y="210" fill="#f3f1eb" font-size="19" font-weight="600">Midnight City</text><text x="886" y="235" fill="#aeb7c4" font-size="15">M83</text></g>
+    <g><circle cx="820" cy="335" r="48" fill="#293240" stroke="#94a3b8" stroke-width="2"/><path d="M800 335h40M808 321v28M832 321v28" stroke="#d6d8dd" stroke-width="3"/><text x="886" y="330" fill="#f3f1eb" font-size="19" font-weight="600">Everything in Its Right Place</text><text x="886" y="355" fill="#aeb7c4" font-size="15">Radiohead</text></g>
+    <g><circle cx="820" cy="455" r="48" fill="#293240" stroke="#94a3b8" stroke-width="2"/><path d="M800 455h40M808 441v28M832 441v28" stroke="#d6d8dd" stroke-width="3"/><text x="886" y="450" fill="#f3f1eb" font-size="19" font-weight="600">Teardrop</text><text x="886" y="475" fill="#aeb7c4" font-size="15">Massive Attack</text></g>
+    <g><circle cx="820" cy="575" r="48" fill="#ff6525" stroke="#ffd0b5" stroke-width="3"/><path d="M800 575h40M808 561v28M832 561v28" stroke="#fff2e9" stroke-width="3"/><text x="886" y="570" fill="#ff9a6c" font-size="19" font-weight="700">Recommended next</text><text x="886" y="595" fill="#f3f1eb" font-size="15">learned from graph context</text></g>
+  </g>
+  <g fill="#ff6525"><circle cx="530" cy="238" r="6"/><circle cx="598" cy="360" r="6"/><circle cx="680" cy="453" r="6"/></g>
+  <text x="76" y="626" fill="#aeb7c4" font-family="Arial, sans-serif" font-size="16">LightGCN propagates information along these links to rank likely missing tracks.</text>
+</svg>

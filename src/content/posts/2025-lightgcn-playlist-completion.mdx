@@ -1,0 +1,36 @@
+export const meta = {
+  slug: 'lightgcn-playlist-completion',
+  date: '2025-09-01',
+  title: 'Can a graph finish a playlist?',
+  description: 'My diploma project: using LightGCN and the Million Playlist Dataset to continue Spotify playlists.',
+  image: '/assets/img/250901-lightgcn.svg',
+  tags: ['Graph neural networks', 'Spotify', 'Diploma'],
+}
+
+## Starting with a bad recommendation
+
+I started this project by trying to recommend songs from Spotify metadata. It was the obvious place to begin: normalise things like energy, danceability and acousticness, then look for nearby tracks. The results looked reasonable on paper, but the recommendations were not especially musical. A Beatles song could be close to something with similar numbers and still feel completely wrong.
+
+That failure changed the question. Instead of asking what a song *sounds like*, I asked what people have already put together. A playlist is a small act of curation. Across millions of them, repeated co-occurrences are a far richer signal than a row of audio features.
+
+## Turning playlists into a graph
+
+The Million Playlist Dataset can be read as a bipartite graph: playlists on one side, songs on the other, and an edge whenever a song belongs to a playlist. Playlist continuation then becomes a link-prediction problem: which missing song should connect to this playlist?
+
+LightGCN is deliberately simple for this job. At each layer, a playlist collects information from its songs and a song collects information from its playlists. Averaging the representations from the layers gives both objects an embedding; a playlist and a song with a high dot product become a plausible pair. The model only sees positive interactions, so training samples songs that were not in the playlist and teaches the model to put the observed one higher.
+
+## The part that made the difference
+
+I implemented the pipeline in Python and PyTorch, then used Optuna to tune it against popularity, SVD and k-nearest-neighbour baselines. I also tested an extra kNN re-ranking step. It sounded promising, but it consistently made the ranking worse: the graph embeddings were already doing the useful neighbourhood work.
+
+Hard negatives were the meaningful change. Rather than training only against obviously unrelated tracks, I sampled absent tracks that the model itself already found plausible. That forced it to make more precise distinctions.
+
+![Benchmark results for the playlist-continuation models](/assets/posts/2025-lightgcn-playlist-completion/model-results.svg)
+
+The best model used two hard negatives for each positive playlist--song pair. At 500 recommendations it achieved Recall@500 of **0.2827**, NDCG@500 of **0.0852**, and MRR@500 of **0.0793**, beating every baseline and the other LightGCN variants. The chart also captures the important caveat: the large recall gain did not turn into an equally large ranking gain. The model was good at bringing relevant tracks into a broad candidate set, but less good at placing them right at the top.
+
+## What I took from it
+
+For a strict song-by-song evaluation, some seemingly wrong predictions were still close in a more human sense. When I counted songs by the same album or artist as useful suggestions, performance rose sharply. That does not make the original metric wrong; it makes the ambiguity of “a good recommendation” visible.
+
+The final system is a metadata-free, scalable starting point for playlist completion. Its next problem is not adding more graph layers. It is learning how to re-rank a strong set of candidates with the kind of context that makes a playlist feel intentional.
