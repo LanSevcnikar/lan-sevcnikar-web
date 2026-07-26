@@ -12,7 +12,7 @@ var level;
 
 function setup() {
 	createCanvas(screenWidth,screenHeight);
-	colour_background = color(39, 39, 39);
+	colour_background = color(24, 44, 76);
 	colour_lines = color(224,224,224);
 	colour_rays = color(255, 101, 37);
 	noFill();
