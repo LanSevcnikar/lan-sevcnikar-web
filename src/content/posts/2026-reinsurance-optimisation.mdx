@@ -1,0 +1,38 @@
+export const meta = {
+  slug: 'reinsurance-optimisation',
+  date: '2026-02-01',
+  title: 'Buying insurance for the part that hurts',
+  description: 'A risk-management project on finding a reinsurance programme for a heavy-tailed portfolio.',
+  image: '/assets/posts/2026-reinsurance-optimisation/tail_scatter.png',
+  tags: ['Risk management', 'Reinsurance', 'Monte Carlo'],
+}
+
+## The average loss was not the problem
+
+Four risks in my portfolio had broadly similar expected losses. If I had stopped there, they would have looked equally important. They were not. Two lognormal risks behaved fairly calmly, while two Fréchet risks occasionally produced extreme losses; when those rare scenarios arrived together, they drove almost all of the capital requirement.
+
+That is why I used Expected Shortfall at 99% rather than only Value-at-Risk. VaR marks a threshold. Expected Shortfall asks what the average loss is *after* crossing it. I used Euler allocation to carry that tail capital back to the individual risks, so the reinsurance decision could follow the actual source of the problem.
+
+![The simulated marginal loss distributions, with the tail beyond ES highlighted](/assets/posts/2026-reinsurance-optimisation/marginals.png)
+
+## Making the bad days happen often enough
+
+I built a four-risk model with lognormal and heavy-tailed Fréchet marginals, linked by survival Clayton copulas. The dependence matters: diversification disappears precisely when large losses begin to arrive together.
+
+The portfolio was simulated 100 million times. That sounds excessive until the quantity of interest is a 1% tail average of heavy-tailed variables. Smaller runs left the Expected Shortfall estimate visibly unstable.
+
+![Expected-Shortfall estimates across repeated Monte Carlo runs](/assets/posts/2026-reinsurance-optimisation/es_distributions_N1000000.png)
+
+The results gave the design a clear direction. Risks X and Y accounted for about **83%** of the allocated portfolio capital, despite their ordinary expected losses being comparable to the other two risks. A broad proportional treaty would spend money reducing everyday losses; targeted excess-of-loss layers could remove the rare scenarios that were actually consuming capital.
+
+![Euler capital allocation before and after the two selected covers](/assets/posts/2026-reinsurance-optimisation/capital-allocation.svg)
+
+## Optimising, then arguing with the optimiser
+
+I first swept 186,624 possible combinations of quota-share rates and excess-of-loss layers, then refined promising programmes with simulated annealing. Both final covers reduced portfolio capital from **152.7** to roughly **118--119**—about a 22% reduction.
+
+The mathematically best cover was almost too good: it bought very remote tail protection cheaply, because the pricing assumptions made the reinsurer look unrealistically willing to take it. So I made a second, shallower cover that was more likely to be accepted in a real market. The “realistic” cover delivered slightly less economic value, but it was a much better answer to the actual problem.
+
+![Gross and net losses in the 1% portfolio tail; points below the diagonal are absorbed by reinsurance](/assets/posts/2026-reinsurance-optimisation/tail_scatter.png)
+
+The project ended up being less about finding a single optimum than making the trade-off inspectable: capital relief, premium, the severity of the protection, and whether someone would plausibly sell it.

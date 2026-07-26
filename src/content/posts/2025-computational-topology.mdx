@@ -1,0 +1,39 @@
+export const meta = {
+  slug: 'computational-topology',
+  date: '2025-12-01',
+  title: 'Finding loops in noisy time series',
+  description: 'Using sliding-window persistence to look for periodicity in signals, temperatures, and sales data.',
+  image: '/assets/posts/2025-computational-topology/pca.PNG',
+  tags: ['Computational topology', 'Persistent homology', 'Python'],
+}
+
+## A period does not always look like a wave
+
+With Luka Korotaj, I wanted to detect periodicity in time series without assuming that it would be clean, stationary, or easy to spot. A regular wave is simple to recognise by eye. Add a trend, noise, or a messy real-world signal and the same question becomes much less obvious.
+
+Our starting trick was to stop looking at the time series as a line. For every time point, we made a vector from the current value and several delayed values. This *sliding-window embedding* turns a repeating signal into a point cloud. If the window covers roughly one period, a periodic signal traces a loop.
+
+![A sliding-window embedding of a trending periodic signal, reduced with PCA for viewing](/assets/posts/2025-computational-topology/pca.PNG)
+
+## Measuring the loop instead of drawing it
+
+Persistent homology gives that picture a score. We connected nearby points at increasing distance thresholds to build a Vietoris--Rips filtration. A loop that appears early and survives for a long time is a long bar in first homology ($H_1$); many short bars are more likely to be sampling artefacts or noise.
+
+![An example H1 persistence diagram](/assets/posts/2025-computational-topology/h1.png)
+
+We implemented the pipeline with `ripser`, using the full pairwise Euclidean distance matrix. There is a tempting extra step here: reduce the high-dimensional embedding with PCA, SVD, or t-SNE. We tried all three. They made the geometry easier to show, but did not improve the persistence calculation, so they stayed a visualisation tool rather than part of the method.
+
+## Where the method held up
+
+The first experiments made the geometric intuition tangible. A sampled sine wave produced the expected dominant loop; a linear function did not.
+
+![Persistence for a sampled sine wave](/assets/posts/2025-computational-topology/pic1.PNG)
+
+The practical difficulty was choosing the delay and window length. Theory suggests making the whole window about one period long, but that period is usually the unknown we are trying to find. We searched candidate delays and inspected the longest $H_1$ feature, while treating the full diagram—not a single scalar—as the real evidence.
+
+Daily temperatures were a more honest test. High-frequency variation blurred the loop and filled the diagram with short-lived features. A simple moving average restored enough large-scale structure to make the annual rhythm visible again.
+
+![Daily temperatures before smoothing](/assets/posts/2025-computational-topology/pic6.png)
+![The same temperature series after smoothing](/assets/posts/2025-computational-topology/pic7.png)
+
+That was the point of the project for me: topology did not magically answer “is this periodic?” It gave us a different lens, one that made the choice of parameters, the effect of noise, and the difference between a real cycle and a convincing-looking pattern explicit.

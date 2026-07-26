@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">LightGCN playlist-completion benchmark results</title>
+  <desc id="desc">Grouped bars compare Recall, NDCG and MRR at 500 recommendations for popularity, SVD, k-nearest neighbours, LightGCN and LightGCN with hard negatives.</desc>
+  <rect width="960" height="560" fill="#11151c"/>
+  <text x="70" y="64" fill="#f3f1eb" font-family="Arial, sans-serif" font-size="28" font-weight="700">Playlist completion benchmark</text>
+  <text x="70" y="94" fill="#aeb7c4" font-family="Arial, sans-serif" font-size="16">Scores at 500 recommendations — higher is better</text>
+  <g stroke="#3b4350" stroke-width="1"><path d="M130 430H900M130 330H900M130 230H900M130 130H900"/></g>
+  <g fill="#aeb7c4" font-family="Arial, sans-serif" font-size="14" text-anchor="end"><text x="118" y="435">0.0</text><text x="118" y="335">0.1</text><text x="118" y="235">0.2</text><text x="118" y="135">0.3</text></g>
+  <g>
+    <rect x="170" y="429.1" width="34" height="0.9" fill="#64748b"/><rect x="208" y="428.8" width="34" height="1.2" fill="#94a3b8"/><rect x="246" y="427.7" width="34" height="2.3" fill="#ff6525"/>
+    <rect x="315" y="310" width="34" height="120" fill="#64748b"/><rect x="353" y="377.9" width="34" height="52.1" fill="#94a3b8"/><rect x="391" y="382.6" width="34" height="47.4" fill="#ff6525"/>
+    <rect x="460" y="259.3" width="34" height="170.7" fill="#64748b"/><rect x="498" y="352.8" width="34" height="77.2" fill="#94a3b8"/><rect x="536" y="360.4" width="34" height="69.6" fill="#ff6525"/>
+    <rect x="605" y="150.3" width="34" height="279.7" fill="#64748b"/><rect x="643" y="345.3" width="34" height="84.7" fill="#94a3b8"/><rect x="681" y="354.6" width="34" height="75.4" fill="#ff6525"/>
+    <rect x="750" y="147.3" width="34" height="282.7" fill="#64748b"/><rect x="788" y="344.8" width="34" height="85.2" fill="#94a3b8"/><rect x="826" y="350.7" width="34" height="79.3" fill="#ff6525"/>
+  </g>
+  <g fill="#f3f1eb" font-family="Arial, sans-serif" font-size="15" text-anchor="middle"><text x="225" y="462">Popularity</text><text x="370" y="462">SVD</text><text x="515" y="462">kNN</text><text x="660" y="462">LightGCN</text><text x="805" y="462">LightGCN +</text><text x="805" y="482">hard negatives</text></g>
+  <g font-family="Arial, sans-serif" font-size="15"><rect x="300" y="515" width="14" height="14" fill="#64748b"/><text x="321" y="527" fill="#f3f1eb">Recall</text><rect x="430" y="515" width="14" height="14" fill="#94a3b8"/><text x="451" y="527" fill="#f3f1eb">NDCG</text><rect x="545" y="515" width="14" height="14" fill="#ff6525"/><text x="566" y="527" fill="#f3f1eb">MRR</text></g>
+</svg>
