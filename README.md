@@ -33,7 +33,7 @@ npm run preview
 - `src/App.jsx` — routes and page composition.
 - `src/components/` — shared React components such as the navigation, hero, collapsibles, and demo frames.
 - `src/styles.css` — global layout and visual styling.
-- `src/i18n.jsx` — English/Slovenian interface translations. English is the default on every fresh load.
+- `src/i18n.jsx` — English/Slovenian interface translations. The visitor's choice is remembered; a first visit follows the browser language (Slovenian browsers get Slovenian, everyone else English).
 - `src/content/posts/` — one MDX file per blog post.
 - `public/assets/` — thumbnails and article images.
 - `public/demos/` — isolated interactive project demos.
